@@ -1,0 +1,259 @@
+//----FUNCTIONS----
+
+// font-source-declaration
+@function font-source-declaration($font-family, $file-path, $file-formats)
+  $src: ()
+  $formats-map: ( eot: "#{$file-path}.eot?#iefix" format("embedded-opentype"), woff2: "#{$file-path}.woff2" format("woff2"), woff: "#{$file-path}.woff" format("woff"), ttf: "#{$file-path}.ttf" format("truetype"), svg: "#{$file-path}.svg##{$font-family}" format("svg"))
+  @each $key, $values in $formats-map
+    @if contains($file-formats, $key)
+      $file-path: nth($values, 1)
+      $font-format: nth($values, 2)
+      $src: append($src, url($file-path) $font-format, comma)
+  @return $src
+
+@function contains($list, $var)
+  $_out: false
+  @each $item in $list
+    @if $item == $var
+      $_out: true
+  @return $_out
+
+// Add percentage of black to a color
+@function shade($color, $percent)
+  @return mix(black, $color, $percent)
+
+// Add percentage of white to a color
+@function tint($color, $percent)
+  @return mix(white, $color, $percent)
+
+
+//----MIXINS----
+
+=appearance($value)
+  -webkit-appearance: $value
+  -moz-appearance: $value
+  appearance: $value
+
+=bg-color-hover($baseColor)
+  background-color: $baseColor
+  transition: background-color 0.25s ease-in-out
+  cursor: pointer
+  &:hover, &:active, &:focus
+    background-color: shade($baseColor, 15%)
+
+=bg-gradient($start-color, $end-color, $orientation)
+  // Background-gradient; Ex: +bg-gradient(#07c, #06f, vertical);
+  background-color: $start-color
+  @if $orientation == 'vertical'
+    background-image: -webkit-linear-gradient(top, $start-color, $end-color)
+    background-image: linear-gradient(to bottom, $start-color, $end-color)
+  @else if $orientation == 'horizontal'
+    background-image: -webkit-linear-gradient(left, $start-color, $end-color)
+    background-image: linear-gradient(to right, $start-color, $end-color)
+  @else
+    background-image: -webkit-radial-gradient(center, ellipse cover, $start-color, $end-color)
+    background-image: radial-gradient(ellipse at center, $start-color, $end-color)
+
+=bg-image($url, $size, $position: null)
+  background-image: url($url)
+  background-size: $size
+  background-position: $position
+  background-repeat: no-repeat
+
+=bg-stripes($direction, $colors)
+  // Stripe builder. Ex: +bg-stripes(to right, #8e44ad #2c3e50 #2980b9 #16a085 #27ae60)
+  $length: length($colors)
+  @if $length > 1
+    $stripes: ()
+    @for $i from 1 through $length
+      $stripe: (100% / $length) * ($i - 1)
+      @if $i > 1
+        $stripes: append($stripes, nth($colors, $i - 1) $stripe, comma)
+      $stripes: append($stripes, nth($colors, $i) $stripe, comma)
+    background-image: linear-gradient($direction, $stripes)
+  @else if $length == 1
+    background-color: $colors
+
+=button($color)
+  box-sizing: border-box
+  border-radius: $base-border-radius
+  padding: 10px
+  color: $color
+  border: 1px solid $color
+  display: inline-block
+  background-color: $transparent
+  cursor: pointer
+  transition: all 0.25s ease-in-out
+  &:hover, &:active, &:focus
+    color: $white
+    background-color: $color
+  &[disabled]
+    color: $secondary-color
+    background-color: $gray
+    opacity: 0.4
+    border-color: $gray
+    cursor: not-allowed
+
+=color-hover($baseColor)
+  color: $baseColor
+  transition: color 0.25s ease-in-out
+  &:hover, &:active, &:focus
+    color: shade($baseColor, 25%)
+
+=event
+  transition: all 0.25s ease-in-out
+  &:hover, &:active, &:focus
+    @content
+
+=font-border($size, $color)
+  text-shadow: -($size) 0px $color, 0px ($size) $color, ($size) 0px $color, 0px (-($size)) $color
+
+=font-face($font-family, $file-path, $weight: normal, $style: normal, $file-formats: eot woff ttf svg)
+  // Font-face; Ex: +font-face("Font-Example", "/assets/fonts/Font-Exampl/Font-Exampl-Semibold", bold, normal)
+  @font-face
+    font-family: $font-family
+    font-style: $style
+    font-weight: $weight
+    src: font-source-declaration($font-family, $file-path, $file-formats)
+
+=font-gradient($direction, $first-color, $second-color)
+  color: $first-color
+  background: linear-gradient($direction,$first-color, $second-color)
+  -webkit-background-clip: text
+  -webkit-text-fill-color: transparent
+  @media screen\0 // IE8, IE9, IE10
+    -webkit-text-fill-color: $first-color
+    color: $first-color
+    background: none
+
+=placeholder
+  &::-webkit-input-placeholder
+    @content
+  &:-moz-placeholder // Firefox 18-
+    @content
+  &::-moz-placeholder // Firefox 19+
+    @content
+  &:-ms-input-placeholder
+    @content
+
+=position($position, $top: null, $right: null, $bottom: null, $left: null)
+  position: $position
+  top: $top
+  right: $right
+  bottom: $bottom
+  left: $left
+
+=scrollbar($size, $foreground-color, $background-color: mix($foreground-color, white,  50%))
+  // Customize scrollbars; Ex: +scrollbar(.5em, slategray)
+  // For Google Chrome
+  ::-webkit-scrollbar
+    width:  $size
+    height: $size
+  ::-webkit-scrollbar-thumb
+    background: $foreground-color
+  ::-webkit-scrollbar-track
+    background: $background-color
+  // For Internet Explorer
+  body
+    scrollbar-face-color: $foreground-color
+    scrollbar-track-color: $background-color
+
+=selection
+  &::-moz-selection
+    @content
+  &::selection
+    @content
+
+=size($size)
+  height: $size
+  width: $size
+  box-sizing: border-box
+
+=triangle($direction, $size, $color)
+  height: 0
+  width: 0
+  border-color: transparent
+  border-style: solid
+  border-width: $size / 2
+  @if $direction == up
+    border-bottom-color: $color
+  @else if $direction == right
+    border-left-color: $color
+  @else if $direction == down
+    border-top-color: $color
+  @else if $direction == left
+    border-right-color: $color
+
+
+// ------MEDIA QUERIES------
+
+// the breakpoints variables are in variables.sass
+=breakpoint($minWidth: 0, $maxWidth: 0, $minHeight: 0, $maxHeight: 0)
+  $type: type-of($minWidth)
+
+  @if $type == string
+    $class: $minWidth
+    @if $class == smallMobile
+      @media (max-width: #{$mobile}) and (max-height: #{$phablet - 1px})
+        @content
+    @if $class == mobile
+      @media (max-width: #{$phablet - 1px})
+        @content
+    @else if $class == phablet
+      @media (min-width: #{$phablet})
+        @content
+    @else if $class == tablet
+      @media (min-width: #{$tablet})
+        @content
+    @else if $class == laptop
+      @media (min-width: #{$laptop})
+        @content
+    @else if $class == desktop
+      @media (min-width: #{$desktop})
+        @content
+    @else if $class == smartTV
+      @media (min-width: #{$smartTV})
+        @content
+    @else
+      @warn "Breakpoint mixin supports: smallMobile, mobile, phablet, tablet, laptop, desktop, smartTV"
+
+  @else if $type == number
+    $widthQuery: "all" !default
+    // width
+    @if $minWidth != 0 and $maxWidth != 0
+      $widthQuery: "(min-width: #{$minWidth}) and (max-width: #{$maxWidth})"
+    @else if $minWidth != 0 and $maxWidth == 0
+      $widthQuery: "(min-width: #{$minWidth})"
+    @else if $minWidth == 0 and $maxWidth != 0
+      $widthQuery: "(max-width: #{$maxWidth})"
+    // height
+    $heightQuery: 0
+    @if $minHeight != 0 and $maxHeight != 0
+      $heightQuery: "(min-height: #{$minHeight}) and (max-height: #{$maxHeight})"
+    @else if $minHeight != 0 and $maxHeight == 0
+      $heightQuery: "(min-height: #{$minHeight})"
+    @else if $minHeight == 0 and $maxHeight != 0
+      $heightQuery: "(max-height: #{$maxHeight})"
+    @if $minHeight != 0
+      @media #{$widthQuery} and #{$heightQuery}
+        @content
+    @else if $maxHeight != 0
+      @media #{$widthQuery} and #{$heightQuery}
+        @content
+    @else if $minHeight != 0 and $maxHeight != 0
+      @media #{$widthQuery} and #{$heightQuery}
+        @content
+    @else
+      @media #{$widthQuery}
+        @content
+
+// EXAMPLES:
+//  +breakpoint($maxWidth: 700px, $minWidth: 500px, $maxHeight: 1500px, $minHeight: 600px)
+//  +breakpoint($minWidth: 400px, $maxWidth: 500px)
+//    background-color: red
+//  aside.primary
+//   +breakpoint(laptop)
+//     float: right
+//     width: 350px
+//   +breakpoint(480px)
+//     display: none
