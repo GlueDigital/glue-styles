@@ -30,19 +30,21 @@
 //----MIXINS----
 
 =appearance($value)
+  // Ex: +appearance(none)
   -webkit-appearance: $value
   -moz-appearance: $value
   appearance: $value
 
 =bg-color-hover($baseColor)
+  // Ex: +bg-color-hover(red)
   background-color: $baseColor
   transition: background-color 0.25s ease-in-out
   cursor: pointer
   &:hover, &:active, &:focus
     background-color: shade($baseColor, 15%)
 
-=bg-gradient($start-color, $end-color, $orientation)
-  // Background-gradient; Ex: +bg-gradient(#07c, #06f, vertical);
+=bg-gradient($start-color, $end-color, $orientation: null)
+  // Ex: +bg-gradient(#07c, #06f, 'vertical')
   background-color: $start-color
   @if $orientation == 'vertical'
     background-image: -webkit-linear-gradient(top, $start-color, $end-color)
@@ -55,6 +57,7 @@
     background-image: radial-gradient(ellipse at center, $start-color, $end-color)
 
 =bg-image($url, $size, $position: null)
+  //Ex: +bg-image(cover, '/assets/images/home-header.jpg')
   background-image: url($url)
   background-size: $size
   background-position: $position
@@ -75,6 +78,7 @@
     background-color: $colors
 
 =button($color)
+  // Ex: +button(red)
   box-sizing: border-box
   border-radius: $base-border-radius
   padding: 10px
@@ -85,8 +89,11 @@
   cursor: pointer
   transition: all 0.25s ease-in-out
   &:hover, &:active, &:focus
-    color: $white
     background-color: $color
+    @if $color == $white
+      color: $black
+    @else
+      color: $white
   &[disabled]
     color: $secondary-color
     background-color: $gray
@@ -95,6 +102,7 @@
     cursor: not-allowed
 
 =color-hover($baseColor)
+  // Ex: +color-hover(red)
   color: $baseColor
   transition: color 0.25s ease-in-out
   &:hover, &:active, &:focus
@@ -106,10 +114,11 @@
     @content
 
 =font-border($size, $color)
+  // Ex: +font-border(2px, red)
   text-shadow: -($size) 0px $color, 0px ($size) $color, ($size) 0px $color, 0px (-($size)) $color
 
 =font-face($font-family, $file-path, $weight: normal, $style: normal, $file-formats: eot woff ttf svg)
-  // Font-face; Ex: +font-face("Font-Example", "/assets/fonts/Font-Exampl/Font-Exampl-Semibold", bold, normal)
+  // Ex: +font-face("Font-Example", "/assets/fonts/Font-Exampl/Font-Exampl-Semibold", bold, normal)
   @font-face
     font-family: $font-family
     font-style: $style
@@ -117,6 +126,7 @@
     src: font-source-declaration($font-family, $file-path, $file-formats)
 
 =font-gradient($direction, $first-color, $second-color)
+  //Ex: +font-gradient(left, blue, red)
   color: $first-color
   background: linear-gradient($direction,$first-color, $second-color)
   -webkit-background-clip: text
@@ -137,6 +147,7 @@
     @content
 
 =position($position, $top: null, $right: null, $bottom: null, $left: null)
+  // Ex: +position(absolute, 5px, 50%)
   position: $position
   top: $top
   right: $right
@@ -165,11 +176,13 @@
     @content
 
 =size($size)
+  // Ex: +size(20px)
   height: $size
   width: $size
   box-sizing: border-box
 
 =triangle($direction, $size, $color)
+  // Ex: +triangle(left, 20px, blue)
   height: 0
   width: 0
   border-color: transparent
@@ -189,6 +202,16 @@
 
 // the breakpoints variables are in variables.sass
 =breakpoint($minWidth: 0, $maxWidth: 0, $minHeight: 0, $maxHeight: 0)
+  // EXAMPLES:
+  //  +breakpoint($maxWidth: 700px, $minWidth: 500px, $maxHeight: 1500px, $minHeight: 600px)
+  //  +breakpoint($minWidth: 400px, $maxWidth: 500px)
+  //    background-color: red
+  //  aside.primary
+  //   +breakpoint(laptop)
+  //     float: right
+  //     width: 350px
+  //   +breakpoint(480px)
+  //     display: none
   $type: type-of($minWidth)
 
   @if $type == string
@@ -246,14 +269,3 @@
     @else
       @media #{$widthQuery}
         @content
-
-// EXAMPLES:
-//  +breakpoint($maxWidth: 700px, $minWidth: 500px, $maxHeight: 1500px, $minHeight: 600px)
-//  +breakpoint($minWidth: 400px, $maxWidth: 500px)
-//    background-color: red
-//  aside.primary
-//   +breakpoint(laptop)
-//     float: right
-//     width: 350px
-//   +breakpoint(480px)
-//     display: none
