@@ -47,17 +47,14 @@
   // Ex: +bg-gradient(#07c, #06f, 'vertical')
   background-color: $start-color
   @if $orientation == 'vertical'
-    background-image: -webkit-linear-gradient(top, $start-color, $end-color)
     background-image: linear-gradient(to bottom, $start-color, $end-color)
   @else if $orientation == 'horizontal'
-    background-image: -webkit-linear-gradient(left, $start-color, $end-color)
     background-image: linear-gradient(to right, $start-color, $end-color)
   @else
-    background-image: -webkit-radial-gradient(center, ellipse cover, $start-color, $end-color)
     background-image: radial-gradient(ellipse at center, $start-color, $end-color)
 
 =bg-image($url, $size, $position: null)
-  //Ex: +bg-image(cover, '/assets/images/home-header.jpg')
+  //Ex: bg-image('/assets/images/logo.png', cover, center)
   background-image: url($url)
   background-size: $size
   background-position: $position
@@ -125,16 +122,22 @@
     font-weight: $weight
     src: font-source-declaration($font-family, $file-path, $file-formats)
 
-=font-gradient($direction, $first-color, $second-color)
-  //Ex: +font-gradient(left, blue, red)
-  color: $first-color
-  background: linear-gradient($direction,$first-color, $second-color)
+=font-gradient($start-color, $end-color, $orientation: null)
+  //Ex: +font-gradient(#07c, #06f, 'vertical')
+  color: $start-color
   -webkit-background-clip: text
   -webkit-text-fill-color: transparent
+  @if $orientation == 'vertical'
+    background: linear-gradient(to bottom, $start-color, $end-color)
+  @else if $orientation == 'horizontal'
+    background: linear-gradient(to right, $start-color, $end-color)
+  @else
+    background: radial-gradient(ellipse at center, $start-color, $end-color)
   @media screen\0 // IE8, IE9, IE10
     -webkit-text-fill-color: $first-color
     color: $first-color
     background: none
+
 
 =placeholder
   &::-webkit-input-placeholder
