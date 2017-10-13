@@ -220,7 +220,7 @@
     @if $class == smallMobile
       @media (max-width: #{$mobile}) and (max-height: #{$phablet - 1px})
         @content
-    @if $class == mobile
+    @else if $class == mobile
       @media (max-width: #{$phablet - 1px})
         @content
     @else if $class == phablet
