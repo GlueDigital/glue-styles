@@ -149,17 +149,17 @@
   //Ex: +font-gradient(#07c, #06f, 'vertical')
   color: $start-color
   @if $orientation == 'vertical'
-    background: linear-gradient(to bottom, $start-color, $end-color)
+    background-image: linear-gradient(to bottom, $start-color, $end-color)
   @else if $orientation == 'horizontal'
-    background: linear-gradient(to right, $start-color, $end-color)
+    background-image: linear-gradient(to right, $start-color, $end-color)
   @else
-    background: radial-gradient(ellipse at center, $start-color, $end-color)
+    background-image: radial-gradient(ellipse at center, $start-color, $end-color)
   -webkit-background-clip: text
   -webkit-text-fill-color: transparent
   @media screen\0 // IE8, IE9, IE10
     -webkit-text-fill-color: $start-color
     color: $start-color
-    background: none
+    background-image: none
 
 =line-clamp($lines: 2)
   overflow: hidden
