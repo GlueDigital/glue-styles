@@ -184,6 +184,17 @@
   bottom: $bottom
   left: $left
 
+=scroll($axis, $maxSize)
+  @if $axis == x
+    overflow-x: auto
+    max-width: $maxSize
+  @else if $axis == y
+    overflow-y: auto
+    max-height: $maxSize
+  @else
+    @warn "The axis must be 'x' or 'y'"
+  -webkit-overflow-scrolling: touch
+
 =scrollbar($size, $foreground-color, $background-color: mix($foreground-color, white,  50%))
   // Customize scrollbars; Ex: +scrollbar(.5em, slategray)
   // For Google Chrome
