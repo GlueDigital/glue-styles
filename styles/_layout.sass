@@ -93,7 +93,7 @@ select
   font-family: $base-font-family
 
 label
-  margin-bottom: $small-spacing / 2
+  margin-bottom: math.div($small-spacing, 2)
 
   &.required::after
     content: '*'
@@ -123,8 +123,8 @@ textarea
   box-shadow: none
   box-sizing: border-box
   font-family: $base-font-family
-  margin-bottom: $base-spacing / 2
-  padding: ($base-spacing / 2) $base-spacing
+  margin-bottom: math.div($base-spacing, 2)
+  padding: (math.div($base-spacing, 2)) $base-spacing
   width: 100%
   transition: background-color 0.3s ease-in-out
   +placeholder
@@ -144,7 +144,7 @@ input[type="search"]
 input[type="checkbox"],
 input[type="radio"]
   display: inline
-  margin-right: $small-spacing / 2
+  margin-right: math.div($small-spacing, 2)
 
 input[type="file"]
   padding-bottom: $small-spacing
