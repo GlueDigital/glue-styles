@@ -1,6 +1,6 @@
 {
   "name": "@gluedigital/glue-styles",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Basic Glue.gl styles framework",
   "main": "index.js",
   "repository": "git@github.com:GlueDigital/glue-styles.git",

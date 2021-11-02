@@ -13,7 +13,6 @@
   width: 1px
   height: 1px
 
-
 %fixed
   position: fixed
   box-sizing: border-box
@@ -22,10 +21,8 @@
   left: 0
 
 %position-center
-  position: absolute
-  top: 50%
-  left: 50%
-  transform: translate(-50%, -50%)
+  display: grid
+  place-items: center
 
 %pseudo
   content: ''
@@ -39,39 +36,3 @@
 
 %rounded
   border-radius: 100%
-
-//----FONT-SIZE PLACEHOLDERS----
-%font-size-xs
-  font-size: $font-size-xs
-  +breakpoint(mobile)
-    font-size: $font-size-xs * 0.9
-
-%font-size-s
-  font-size: $font-size-s
-  +breakpoint(mobile)
-    font-size: $font-size-s * 0.9
-
-%font-size-m
-  font-size: $font-size-m
-  +breakpoint(mobile)
-    font-size: $font-size-m * 0.875
-
-%font-size-l
-  font-size: $font-size-l
-  +breakpoint(mobile)
-    font-size: $font-size-l * 0.8
-
-%font-size-xl
-  font-size: $font-size-xl
-  +breakpoint(mobile)
-    font-size: $font-size-xl * 0.8
-
-%font-size-xxl
-  font-size: $font-size-xxl
-  +breakpoint(mobile)
-    font-size: $font-size-xxl * 0.75
-
-%font-size-xxxl
-  font-size: $font-size-xxxl
-  +breakpoint(mobile)
-    font-size: $font-size-xxxl * 0.7
