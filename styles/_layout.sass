@@ -1,4 +1,8 @@
+@use "sass:color"
 @use "sass:math"
+@use "variables" as *
+@use "mixins" as *
+@use "placeholders" as *
 
 // ---------STRUCTURE---------
 html
@@ -54,7 +58,7 @@ a
   &:active,
   &:focus,
   &:hover
-    color: darken($action-color, 15%)
+    color: color.adjust($action-color, $lightness: -15%)
   &:active,
   &:focus
     outline: none
@@ -82,7 +86,7 @@ form
   max-height: 100%
 
 fieldset
-  background-color: lighten($base-border-color, 10%)
+  background-color: color.adjust($base-border-color, $lightness: 10%)
   border: $base-border
   padding: $base-spacing
 

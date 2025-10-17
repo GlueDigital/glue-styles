@@ -1,4 +1,8 @@
+@use "sass:color"
+@use "sass:list"
+@use "sass:meta"
 @use "sass:math"
+@use "variables" as *
 
 // font-source-declaration
 @function font-source-declaration($font-family, $file-path, $file-formats)
@@ -6,9 +10,9 @@
   $formats-map: ( eot: "#{$file-path}.eot?#iefix" format("embedded-opentype"), woff2: "#{$file-path}.woff2" format("woff2"), woff: "#{$file-path}.woff" format("woff"), ttf: "#{$file-path}.ttf" format("truetype"), svg: "#{$file-path}.svg##{$font-family}" format("svg"))
   @each $key, $values in $formats-map
     @if contains($file-formats, $key)
-      $file-path: nth($values, 1)
-      $font-format: nth($values, 2)
-      $src: append($src, url($file-path) $font-format, comma)
+      $file-path: list.nth($values, 1)
+      $font-format: list.nth($values, 2)
+      $src: list.append($src, url($file-path) $font-format, comma)
   @return $src
 
 @function contains($list, $var)
@@ -20,11 +24,11 @@
 
 // Add percentage of black to a color
 @function shade($color, $percent)
-  @return mix(black, $color, $percent)
+  @return color.mix(black, $color, $percent)
 
 // Add percentage of white to a color
 @function tint($color, $percent)
-  @return mix(white, $color, $percent)
+  @return color.mix(white, $color, $percent)
 
 
 //----MIXINS----
@@ -85,14 +89,14 @@
 
 =bg-stripes($direction, $colors)
   // Stripe builder. Ex: +bg-stripes(to right, #8e44ad #2c3e50 #2980b9 #16a085 #27ae60)
-  $length: length($colors)
+  $length: list.length($colors)
   @if $length > 1
     $stripes: ()
     @for $i from 1 through $length
       $stripe: math.div(100%, $length) * ($i - 1)
       @if $i > 1
-        $stripes: append($stripes, nth($colors, $i - 1) $stripe, comma)
-      $stripes: append($stripes, nth($colors, $i) $stripe, comma)
+        $stripes: list.append($stripes, list.nth($colors, $i - 1) $stripe, comma)
+      $stripes: list.append($stripes, list.nth($colors, $i) $stripe, comma)
     background-image: linear-gradient($direction, $stripes)
   @else if $length == 1
     background-color: $colors
@@ -197,7 +201,7 @@
     @warn "The axis must be 'x' or 'y'"
   -webkit-overflow-scrolling: touch
 
-=scrollbar($size, $foreground-color, $background-color: mix($foreground-color, white,  50%))
+=scrollbar($size, $foreground-color, $background-color: color.mix($foreground-color, white,  50%))
   // Customize scrollbars; Ex: +scrollbar(.5em, slategray)
   // For Google Chrome
   ::-webkit-scrollbar
@@ -254,7 +258,7 @@
   //     width: 350px
   //   +breakpoint(480px)
   //     display: none
-  $type: type-of($minWidth)
+  $type: meta.type-of($minWidth)
 
   @if $type == string
     $class: $minWidth

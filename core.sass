@@ -5,8 +5,9 @@
 
 @charset 'utf-8'
 @use 'sass:math'
-$core-is-loaded: true
 
-@import "styles/variables"
-@import "styles/mixins"
-@import "styles/placeholders"
+$core-is-loaded: true !default
+
+@forward 'styles/variables'
+@forward 'styles/mixins'
+@forward 'styles/placeholders'
